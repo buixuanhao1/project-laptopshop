@@ -2,6 +2,7 @@ package com.vn.laptopshop.domain;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,10 @@ public class User {
     private String phone;
 
     private String avatar;
+
+    @OneToOne()
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public String getAvatar() {
         return avatar;
@@ -101,6 +106,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
 }
