@@ -27,4 +27,8 @@ public class UserService {
     public Optional<User> FindUserById(Long id) {
         return this.userRepository.findById(id);
     }
+
+    public void DeleteUserById(Long id) {
+        this.userRepository.deleteById(id);
+    }
 }

@@ -74,4 +74,54 @@ public class UserController {
         }
         return "admin/user/detail";
     }
+
+    @GetMapping("/admin/user/update/{id}")
+    public String getUpdatePage(@PathVariable Long id, Model model) {
+        Optional<User> user = this.userService.FindUserById(id);
+        if (user.isPresent()) {
+            model.addAttribute("newUser", user.get());
+        }
+        return "admin/user/update";
+    }
+
+    @PostMapping("/admin/user/update")
+    public String UpdateUser(@ModelAttribute("newUser") User newUser,
+            @RequestParam("hao_File") MultipartFile file) {
+
+        Optional<Role> role = this.roleService.findRoleByName(newUser.getRole().getName());
+        if (role.isPresent()) {
+            newUser.setRole(role.get());
+        }
+        String avatar = this.uploadFileService.handleSaveUpLoadFile(file, "avatar");
+        newUser.setAvatar(avatar);
+        this.userService.SaveUser(newUser);
+
+        // Optional<User> currentUser = userService.FindUserById(hao.getId());
+        // String avatar = this.uploadFileService.handleSaveUpLoadFile(file, "avatar");
+        // Optional<Role> role =
+        // this.roleService.findRoleByName(hao.getRole().getName());
+        // if (currentUser.isPresent()) {
+        // currentUser.get().setAddress(hao.getAddress());
+        // currentUser.get().setEmail(hao.getEmail());
+        // currentUser.get().setPhone(hao.getPhone());
+        // currentUser.get().setAvatar(avatar);
+        // currentUser.get().setRole(role.get());
+
+        // }
+        // this.userService.SaveUser(currentUser.get());
+        return "redirect:/admin/user";
+    }
+
+    @GetMapping("/admin/user/delete/{id}")
+    public String getDeletePage(Model model, @PathVariable Long id) {
+        model.addAttribute("id", id);
+        return "/admin/user/delete";
+    }
+
+    @PostMapping("/admin/user/delete")
+    public String deleteUser(@RequestParam Long id) {
+        this.userService.DeleteUserById(id);
+        return "redirect:/admin/user";
+    }
+
 }

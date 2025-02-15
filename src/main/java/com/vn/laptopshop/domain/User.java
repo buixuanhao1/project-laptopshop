@@ -30,7 +30,7 @@ public class User {
 
     private String avatar;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "role_id")
     private Role role;
 
