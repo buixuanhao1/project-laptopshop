@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +20,8 @@ import com.vn.laptopshop.domain.User;
 import com.vn.laptopshop.service.RoleService;
 import com.vn.laptopshop.service.UploadFileService;
 import com.vn.laptopshop.service.UserService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class UserController {
@@ -43,8 +46,13 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/create")
-    public String createUser(@ModelAttribute("newUser") User newUser,
+    public String createUser(@ModelAttribute("newUser") @Valid User newUser,
+            BindingResult bindingResult,
             @RequestParam("hao_File") MultipartFile file) {
+
+        if (bindingResult.hasErrors()) {
+            return "admin/user/create";
+        }
         Optional<Role> role = this.roleService.findRoleByName(newUser.getRole().getName());
         if (role.isPresent()) {
             newUser.setRole(role.get());
@@ -55,7 +63,7 @@ public class UserController {
         newUser.setAvatar(avatar);
         this.userService.SaveUser(newUser);
 
-        return "admin/user/create";
+        return "redirect:/admin/user";
     }
 
     @GetMapping("/admin/user")
@@ -85,9 +93,13 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/update")
-    public String UpdateUser(@ModelAttribute("newUser") User newUser,
+    public String UpdateUser(@ModelAttribute("newUser") @Valid User newUser,
+            BindingResult bindingResult,
             @RequestParam("hao_File") MultipartFile file) {
 
+        if (bindingResult.hasErrors()) {
+            return "/admin/user/update";
+        }
         Optional<Role> role = this.roleService.findRoleByName(newUser.getRole().getName());
         if (role.isPresent()) {
             newUser.setRole(role.get());

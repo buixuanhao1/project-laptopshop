@@ -71,7 +71,7 @@
                                                 </c:set>
                                                 <label for="name" class="form-label">Full Name</label>
                                                 <form:input type="text"
-                                                    class="form-control ${not empty errorPassword ? 'is-invalid' : ''}"
+                                                    class="form-control ${not empty errorFullName ? 'is-invalid' : ''}"
                                                     path="name" />
                                                 ${errorFullName}
                                             </div>

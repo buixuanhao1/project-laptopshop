@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.vn.laptopshop.domain.Product;
 import com.vn.laptopshop.service.ProductService;
 import com.vn.laptopshop.service.UploadFileService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class ProductController {
@@ -38,8 +41,13 @@ public class ProductController {
     }
 
     @PostMapping("/admin/product/create")
-    public String createProductPage(@ModelAttribute Product newProduct,
+    public String createProductPage(@ModelAttribute("newProduct") @Valid Product newProduct,
+            BindingResult bindingResult,
             @RequestParam("hao_File") MultipartFile file) {
+
+        if (bindingResult.hasErrors()) {
+            return "/admin/product/create";
+        }
         String avatar = this.uploadFileService.handleSaveUpLoadFile(file, "product");
         newProduct.setImage(avatar);
         this.productService.SaveProduct(newProduct);
@@ -63,9 +71,14 @@ public class ProductController {
     }
 
     @PostMapping("/admin/product/update")
-    public String UpdateProductPage(@ModelAttribute Product newProduct,
+    public String UpdateProductPage(@ModelAttribute("newProduct") @Valid Product newProduct,
+            BindingResult bindingResult,
             @RequestParam(value = "hao_File", required = false) MultipartFile file) {
         Optional<Product> product = this.productService.FindProductById(newProduct.getId());
+
+        if (bindingResult.hasErrors()) {
+            return "/admin/product/update";
+        }
         if (product.isEmpty()) {
             return "redirect:/admin/product";
         }
@@ -73,7 +86,15 @@ public class ProductController {
         if (file != null && !file.isEmpty()) {
             String avatar = this.uploadFileService.handleSaveUpLoadFile(file, "product");
             existingProduct.setImage(avatar);
+
         }
+        existingProduct.setName(newProduct.getName());
+        existingProduct.setDetailDesc(newProduct.getDetailDesc());
+        existingProduct.setFactory(newProduct.getFactory());
+        existingProduct.setPrice(newProduct.getPrice());
+        existingProduct.setShortDesc(newProduct.getShortDesc());
+        existingProduct.setQuantity(newProduct.getQuantity());
+        existingProduct.setTarget(newProduct.getTarget());
         this.productService.SaveProduct(existingProduct);
 
         return "redirect:/admin/product";
