@@ -1,4 +1,4 @@
-package com.vn.laptopshop.controller;
+package com.vn.laptopshop.controller.admin;
 
 import java.util.Optional;
 
