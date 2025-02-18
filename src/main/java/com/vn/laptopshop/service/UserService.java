@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.vn.laptopshop.domain.User;
+import com.vn.laptopshop.domain.DTO.RegisterDTO;
 import com.vn.laptopshop.repository.UserRepository;
 
 @Service
@@ -31,4 +32,16 @@ public class UserService {
     public void DeleteUserById(Long id) {
         this.userRepository.deleteById(id);
     }
+
+    public User TransferRegisterDtoToUser(RegisterDTO registerDTO) {
+        if (registerDTO != null) {
+            User user = new User();
+            user.setEmail(registerDTO.getEmail());
+            user.setName(registerDTO.getLastName() + " " + registerDTO.getFirstName());
+            user.setPassWord(registerDTO.getPassword());
+            return user;
+        }
+        return null;
+    }
+
 }
