@@ -52,15 +52,6 @@ public class User {
     public User() {
     }
 
-    public User(long id, String email, String passWord, String name, String address, String phone) {
-        this.id = id;
-        this.email = email;
-        this.passWord = passWord;
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-    }
-
     @Override
     public String toString() {
         return "User [id=" + id + ", email=" + email + ", passWord=" + passWord + ", name=" + name + ", address="
