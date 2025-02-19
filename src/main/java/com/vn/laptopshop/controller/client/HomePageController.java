@@ -1,8 +1,12 @@
 package com.vn.laptopshop.controller.client;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +16,8 @@ import com.vn.laptopshop.domain.DTO.RegisterDTO;
 import com.vn.laptopshop.service.ProductService;
 import com.vn.laptopshop.service.RoleService;
 import com.vn.laptopshop.service.UserService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class HomePageController {
@@ -42,7 +48,15 @@ public class HomePageController {
     }
 
     @PostMapping("/register")
-    public String RegisterNewUser(@ModelAttribute("registerUser") RegisterDTO registerDTO) {
+    public String RegisterNewUser(@ModelAttribute("registerUser") @Valid RegisterDTO registerDTO,
+            BindingResult bindingResult) {
+        List<FieldError> errors = bindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            System.out.println(">>>>>" + error.getField() + " - " + error.getDefaultMessage());
+        }
+        if (bindingResult.hasErrors()) {
+            return "/client/auth/register";
+        }
         User user = this.userService.TransferRegisterDtoToUser(registerDTO);
         String hashPassword = this.passwordEncoder.encode(registerDTO.getPassword());
         user.setPassWord(hashPassword);

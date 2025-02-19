@@ -44,4 +44,10 @@ public class UserService {
         return null;
     }
 
+    public boolean CheckEmailExists(String email) {
+        if (this.userRepository.existsByEmail(email))
+            return true;
+        return false;
+    }
+
 }

@@ -1,5 +1,8 @@
 package com.vn.laptopshop.domain.DTO;
 
+import com.vn.laptopshop.service.Validator.RegisterChecked;
+
+@RegisterChecked
 public class RegisterDTO {
     private String firstName;
     private String lastName;
