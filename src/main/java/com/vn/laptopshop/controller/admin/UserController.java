@@ -98,7 +98,7 @@ public class UserController {
             @RequestParam("hao_File") MultipartFile file) {
 
         if (bindingResult.hasErrors()) {
-            return "/admin/user/update";
+            return "admin/user/update";
         }
         Optional<Role> role = this.roleService.findRoleByName(newUser.getRole().getName());
         if (role.isPresent()) {
@@ -127,7 +127,7 @@ public class UserController {
     @GetMapping("/admin/user/delete/{id}")
     public String getDeletePage(Model model, @PathVariable Long id) {
         model.addAttribute("id", id);
-        return "/admin/user/delete";
+        return "admin/user/delete";
     }
 
     @PostMapping("/admin/user/delete")
