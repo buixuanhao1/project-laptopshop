@@ -52,7 +52,7 @@
 
                 <jsp:include page="../layout/banner.jsp" />
 
-                <jsp:include page="../layout/feature.jsp" />
+
 
 
                 <!-- Fruits Shop Start-->

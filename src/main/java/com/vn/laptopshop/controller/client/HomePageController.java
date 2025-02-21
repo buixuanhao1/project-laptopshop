@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.vn.laptopshop.domain.User;
@@ -73,6 +74,12 @@ public class HomePageController {
     @GetMapping("/access-deny")
     public String DenyPage() {
         return "client/auth/deny";
+    }
+
+    @GetMapping("/product/{id}")
+    public String DetailsProductsPage(@PathVariable Long id, Model model) {
+        model.addAttribute("product", this.productService.FindProductById(id).get());
+        return "client/product/detail";
     }
 
 }
