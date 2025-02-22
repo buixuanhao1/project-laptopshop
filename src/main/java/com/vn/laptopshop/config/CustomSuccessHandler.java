@@ -70,6 +70,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         if (user != null) {
             session.setAttribute("fullName", user.getName());
             session.setAttribute("avatar", user.getAvatar());
+            session.setAttribute("email", currentUserName);
         }
     }
 

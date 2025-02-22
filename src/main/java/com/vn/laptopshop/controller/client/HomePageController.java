@@ -18,6 +18,8 @@ import com.vn.laptopshop.service.ProductService;
 import com.vn.laptopshop.service.RoleService;
 import com.vn.laptopshop.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -80,6 +82,16 @@ public class HomePageController {
     public String DetailsProductsPage(@PathVariable Long id, Model model) {
         model.addAttribute("product", this.productService.FindProductById(id).get());
         return "client/product/detail";
+    }
+
+    @PostMapping("/add-product-to-cart/{id}")
+    public String addProductToCart(@PathVariable Long id, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        String email = (String) session.getAttribute("email");
+        this.productService.handleAddProductToCart(id, email, session);
+        return "redirect:/";
+
     }
 
 }
