@@ -1,6 +1,7 @@
 package com.vn.laptopshop.controller.client;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.vn.laptopshop.domain.User;
 import com.vn.laptopshop.domain.DTO.RegisterDTO;
+import com.vn.laptopshop.service.CartDetailService;
 import com.vn.laptopshop.service.ProductService;
 import com.vn.laptopshop.service.RoleService;
 import com.vn.laptopshop.service.UserService;
@@ -28,14 +30,17 @@ public class HomePageController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
+    private final CartDetailService cartDetailService;
 
     public HomePageController(ProductService productService,
             UserService userService,
-            PasswordEncoder passwordEncoder, RoleService roleService) {
+            PasswordEncoder passwordEncoder, RoleService roleService,
+            CartDetailService cartDetailService) {
         this.productService = productService;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
+        this.cartDetailService = cartDetailService;
     }
 
     @GetMapping("/")
@@ -92,6 +97,17 @@ public class HomePageController {
         this.productService.handleAddProductToCart(id, email, session);
         return "redirect:/";
 
+    }
+
+    @GetMapping("/cart")
+    public String CartPage(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Long id = (Long) session.getAttribute("id");
+        Optional<User> OtpUser = this.userService.FindUserById(id);
+        if (OtpUser.isPresent()) {
+            model.addAttribute("cartDetails", this.cartDetailService.FindAllCartDetailsByCart(OtpUser.get().getCart()));
+        }
+        return "client/cart/show";
     }
 
 }

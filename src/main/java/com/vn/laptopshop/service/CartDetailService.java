@@ -1,5 +1,6 @@
 package com.vn.laptopshop.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -31,5 +32,9 @@ public class CartDetailService {
 
     public int CountCartDetailsByCartId(Long id) {
         return this.cartDetailsRepository.countCartDetailsByCartId(id);
+    }
+
+    public List<CartDetail> FindAllCartDetailsByCart(Cart cart) {
+        return this.cartDetailsRepository.findAllByCart(cart);
     }
 }

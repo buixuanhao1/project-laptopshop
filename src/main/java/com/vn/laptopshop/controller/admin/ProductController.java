@@ -46,7 +46,7 @@ public class ProductController {
             @RequestParam("hao_File") MultipartFile file) {
 
         if (bindingResult.hasErrors()) {
-            return "/admin/product/create";
+            return "admin/product/create";
         }
         String avatar = this.uploadFileService.handleSaveUpLoadFile(file, "product");
         newProduct.setImage(avatar);
@@ -57,7 +57,7 @@ public class ProductController {
     @GetMapping("/admin/product/{id}")
     public String getViewProduct(@PathVariable Long id, Model model) {
         model.addAttribute("product", this.productService.FindProductById(id).get());
-        return "/admin/product/details";
+        return "admin/product/details";
     }
 
     @GetMapping("/admin/product/update/{id}")
@@ -77,7 +77,7 @@ public class ProductController {
         Optional<Product> product = this.productService.FindProductById(newProduct.getId());
 
         if (bindingResult.hasErrors()) {
-            return "/admin/product/update";
+            return "admin/product/update";
         }
         if (product.isEmpty()) {
             return "redirect:/admin/product";
@@ -103,7 +103,7 @@ public class ProductController {
     @GetMapping("/admin/product/delete/{id}")
     public String DeleteProductPage(Model model, @PathVariable Long id) {
         model.addAttribute("id", id);
-        return "/admin/product/delete";
+        return "admin/product/delete";
     }
 
     @PostMapping("/admin/product/delete")
