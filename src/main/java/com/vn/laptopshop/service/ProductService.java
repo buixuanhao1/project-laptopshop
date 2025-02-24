@@ -69,7 +69,5 @@ public class ProductService {
                 oldCartDetail.setQuantity(oldCartDetail.getQuantity() + 1);
             }
         }
-        session.setAttribute("sum", this.cartDetailService.CountCartDetailsByCartId(user.getCart().getId()));
-
     }
 }

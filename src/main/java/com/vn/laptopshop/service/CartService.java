@@ -17,4 +17,8 @@ public class CartService {
         return this.cartRepository.save(cart);
     }
 
+    public Cart FindCartById(long id) {
+        return this.cartRepository.findById(id).get();
+    }
+
 }

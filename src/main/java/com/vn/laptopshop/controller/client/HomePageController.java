@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.vn.laptopshop.domain.Cart;
 import com.vn.laptopshop.domain.User;
 import com.vn.laptopshop.domain.DTO.RegisterDTO;
 import com.vn.laptopshop.service.CartDetailService;
+import com.vn.laptopshop.service.CartService;
 import com.vn.laptopshop.service.ProductService;
 import com.vn.laptopshop.service.RoleService;
 import com.vn.laptopshop.service.UserService;
@@ -31,21 +33,28 @@ public class HomePageController {
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
     private final CartDetailService cartDetailService;
+    private final CartService cartService;
 
     public HomePageController(ProductService productService,
             UserService userService,
             PasswordEncoder passwordEncoder, RoleService roleService,
-            CartDetailService cartDetailService) {
+            CartDetailService cartDetailService,
+            CartService cartService) {
         this.productService = productService;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
         this.cartDetailService = cartDetailService;
+        this.cartService = cartService;
     }
 
     @GetMapping("/")
-    public String getHomePage(Model model) {
+    public String getHomePage(Model model, HttpServletRequest request) {
         model.addAttribute("products", this.productService.FindAllProducts());
+        HttpSession session = request.getSession(false);
+        long cart_id = (long) session.getAttribute("cart_id");
+        Cart cart = this.cartService.FindCartById(cart_id);
+        session.setAttribute("sum", cart == null ? 0 : this.cartDetailService.CountCartDetailsByCartId(cart.getId()));
         return "client/homepage/show";
     }
 
@@ -97,17 +106,6 @@ public class HomePageController {
         this.productService.handleAddProductToCart(id, email, session);
         return "redirect:/";
 
-    }
-
-    @GetMapping("/cart")
-    public String CartPage(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        Long id = (Long) session.getAttribute("id");
-        Optional<User> OtpUser = this.userService.FindUserById(id);
-        if (OtpUser.isPresent()) {
-            model.addAttribute("cartDetails", this.cartDetailService.FindAllCartDetailsByCart(OtpUser.get().getCart()));
-        }
-        return "client/cart/show";
     }
 
 }
