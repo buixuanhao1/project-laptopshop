@@ -41,4 +41,9 @@ public class CartDetailService {
     public void DeleteCartDetailById(long id) {
         this.cartDetailsRepository.deleteById(id);
     }
+
+    public List<CartDetail> SaveAllCartDetails(List<CartDetail> cartDetails) {
+        return this.cartDetailsRepository.saveAll(cartDetails);
+    }
+
 }
