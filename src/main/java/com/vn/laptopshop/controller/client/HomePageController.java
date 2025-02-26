@@ -52,9 +52,16 @@ public class HomePageController {
     public String getHomePage(Model model, HttpServletRequest request) {
         model.addAttribute("products", this.productService.FindAllProducts());
         HttpSession session = request.getSession(false);
-        long cart_id = (long) session.getAttribute("cart_id");
-        Cart cart = this.cartService.FindCartById(cart_id);
-        session.setAttribute("sum", cart == null ? 0 : this.cartDetailService.CountCartDetailsByCartId(cart.getId()));
+        long cart_id = session.getAttribute("cart_id") == null ? -1 : (long) session.getAttribute("cart_id");
+        if (cart_id != -1) {
+            Cart cart = this.cartService.FindCartById(cart_id);
+            session.setAttribute("sum",
+                    cart == null ? 0 : this.cartDetailService.CountCartDetailsByCartId(cart.getId()));
+        } else {
+            session.setAttribute("sum", 0);
+
+        }
+
         return "client/homepage/show";
     }
 

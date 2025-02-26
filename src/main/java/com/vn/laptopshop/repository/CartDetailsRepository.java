@@ -27,4 +27,9 @@ public interface CartDetailsRepository extends JpaRepository<CartDetail, Long> {
 
     void deleteById(long id);
 
+    void deleteByCart(Cart cart);
+
+    @Query("SELECT SUM(c.price * c.quantity) FROM CartDetail c WHERE c.cart.id = :cartId")
+    Double getTotalPriceByCartId(@Param("cartId") Long cartId);
+
 }

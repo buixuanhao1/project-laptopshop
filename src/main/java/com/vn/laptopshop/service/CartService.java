@@ -3,6 +3,7 @@ package com.vn.laptopshop.service;
 import org.springframework.stereotype.Service;
 
 import com.vn.laptopshop.domain.Cart;
+import com.vn.laptopshop.domain.User;
 import com.vn.laptopshop.repository.CartRepository;
 
 @Service
@@ -19,6 +20,14 @@ public class CartService {
 
     public Cart FindCartById(long id) {
         return this.cartRepository.findById(id).get();
+    }
+
+    public void DeleteCartByUser(User user) {
+        this.cartRepository.deleteByUser(user);
+    }
+
+    public Cart FindCartByUser(User user) {
+        return this.cartRepository.findByUser(user);
     }
 
 }

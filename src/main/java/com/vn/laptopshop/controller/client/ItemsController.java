@@ -1,5 +1,6 @@
 package com.vn.laptopshop.controller.client;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import com.vn.laptopshop.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Controller
 public class ItemsController {
@@ -106,11 +108,21 @@ public class ItemsController {
     }
 
     @PostMapping("/place-order")
-    public String handlePlaceOrder(HttpServletRequest request,
+    public String handlePlaceOrder(
+            HttpServletRequest request,
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
             @RequestParam("receiverPhone") String receiverPhone) {
+        HttpSession session = request.getSession(false);
 
-        return "";
+        Long id = (Long) session.getAttribute("id");
+        User user = this.userService.FindUserById(id).get();
+        this.productService.handlePlaceOrder(user, session, receiverName, receiverAddress, receiverPhone);
+        return "redirect:/notice";
+    }
+
+    @GetMapping("/notice")
+    public String sussesPalaceOrder() {
+        return "client/cart/notice";
     }
 }

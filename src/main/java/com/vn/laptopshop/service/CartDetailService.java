@@ -46,4 +46,12 @@ public class CartDetailService {
         return this.cartDetailsRepository.saveAll(cartDetails);
     }
 
+    public double SumPriceByCart(long id) {
+        return this.cartDetailsRepository.countCartDetailsByCartId(id);
+    }
+
+    public void DeleteByCart(Cart cart) {
+        this.cartDetailsRepository.deleteByCart(cart);
+    }
+
 }
