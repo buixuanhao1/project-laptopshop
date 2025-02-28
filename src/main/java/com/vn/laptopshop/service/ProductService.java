@@ -128,4 +128,8 @@ public class ProductService {
         }
     }
 
+    public Long CountProducts() {
+        return this.productRepository.count();
+    }
+
 }

@@ -54,4 +54,8 @@ public class UserService {
         return this.userRepository.findByEmail(email).get();
     }
 
+    public long CountUses() {
+        return this.userRepository.count();
+    }
+
 }
