@@ -20,7 +20,7 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Delete User</h1>
+                                <h1 class="mt-4">Delete Order</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item active"><a href="/admin">Dashborad</a></li>
                                     <li class="breadcrumb-item active">Dashboard</li>
@@ -29,13 +29,12 @@
                             <div class="container mt-5">
                                 <div class="row">
                                     <div class="col-md-6 col-12 mx-auto">
-                                        <h3>Delete User With Id ${id}</h3>
+                                        <h3>Delete order With Id ${id}</h3>
                                         <div class="alert alert-danger" role="alert">
-                                            Are you sure to delete this user?
+                                            Are you sure to delete this order?
                                         </div>
-                                        <form method="post" action="/admin/user/delete">
+                                        <form method="post" action="/admin/order/delete">
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
                                             <div class="mb-3" style="display: none;">
                                                 <label for="id" class="form-label">Id</label>
                                                 <input type="hidden" name="id" value="${id}" />
@@ -43,8 +42,10 @@
                                             <button type="submit" class="btn btn-success">Confirm</button>
                                         </form>
                                         <div class="mt-5">
-                                            <a href="/admin/user" type="submit" class="btn btn-primary">Back</a>
+                                            <a href="/admin/order" type="submit" class="btn btn-primary">Back</a>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.vn.laptopshop.domain.Cart;
@@ -38,6 +40,10 @@ public class ProductService {
 
     public Product SaveProduct(Product product) {
         return this.productRepository.save(product);
+    }
+
+    public Page<Product> FindAllProducts(Pageable pageable) {
+        return this.productRepository.findAll(pageable);
     }
 
     public List<Product> FindAllProducts() {

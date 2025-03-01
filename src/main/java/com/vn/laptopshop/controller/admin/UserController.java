@@ -3,6 +3,9 @@ package com.vn.laptopshop.controller.admin;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,9 +70,19 @@ public class UserController {
     }
 
     @GetMapping("/admin/user")
-    public String userPage(Model model) {
-        model.addAttribute("users", this.userService.FindAllUser());
-
+    public String userPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        Pageable pageable = PageRequest.of(page - 1, 2);
+        model.addAttribute("users", this.userService.FindAllUser(pageable).getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", this.userService.FindAllUser(pageable).getTotalPages());
         return "admin/user/show";
     }
 
@@ -131,7 +144,7 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/delete")
-    public String deleteUser(@RequestParam Long id) {
+    public String deleteUser(@RequestParam("id") Long id) {
         this.userService.DeleteUserById(id);
         return "redirect:/admin/user";
     }

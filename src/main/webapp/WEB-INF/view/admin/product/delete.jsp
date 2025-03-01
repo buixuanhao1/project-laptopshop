@@ -34,6 +34,8 @@
                                             Are you sure to delete this product?
                                         </div>
                                         <form method="post" action="/admin/product/delete">
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
                                             <div class="mb-3" style="display: none;">
                                                 <label for="id" class="form-label">Id</label>
                                                 <input type="hidden" name="id" value="${id}" />

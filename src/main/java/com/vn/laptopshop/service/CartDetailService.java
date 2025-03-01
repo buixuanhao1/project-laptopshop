@@ -47,7 +47,7 @@ public class CartDetailService {
     }
 
     public double SumPriceByCart(long id) {
-        return this.cartDetailsRepository.countCartDetailsByCartId(id);
+        return this.cartDetailsRepository.getTotalPriceByCartId(id);
     }
 
     public void DeleteByCart(Cart cart) {

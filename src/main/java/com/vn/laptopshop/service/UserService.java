@@ -3,6 +3,8 @@ package com.vn.laptopshop.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.vn.laptopshop.domain.User;
@@ -23,6 +25,10 @@ public class UserService {
 
     public List<User> FindAllUser() {
         return this.userRepository.findAll();
+    }
+
+    public Page<User> FindAllUser(Pageable pageable) {
+        return this.userRepository.findAll(pageable);
     }
 
     public Optional<User> FindUserById(Long id) {
